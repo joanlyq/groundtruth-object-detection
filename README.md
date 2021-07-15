@@ -1,6 +1,6 @@
 # Prepare images and manifest for AWS SageMaker Ground Truth
 
-Inspired by [Streamlining data labeling for YOLO object detection in Amazon SageMaker Ground Truth](https://aws.amazon.com/blogs/machine-learning/streamlining-data-labeling-for-yolo-object-detection-in-amazon-sagemaker-ground-truth/)
+Forked from [Streamlining data labeling for YOLO object detection in Amazon SageMaker Ground Truth](https://aws.amazon.com/blogs/machine-learning/streamlining-data-labeling-for-yolo-object-detection-in-amazon-sagemaker-ground-truth/)
 
 For testing preparing a large tiff for Ground Truth Labeling
 
