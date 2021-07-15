@@ -1,0 +1,11 @@
+{
+    "s3_bucket":"geonadir-dev/jliTesting/SeaCucumberLabellingTesting",
+    "job_id":"HideawayBay20",
+    "ground_truth_job_name":"sc-label-testing",
+    "yolo_output_dir":"sc-annotation",
+    "raw_img_dir":"geonadir-dev/jliTesting/HideawayBay20/",
+    "crop_img_dir":"geonadir-dev/jliTesting/SeaCucumberLabellingTesting/HideawayBay20/",
+    "crop_width":"416",
+    "crop_height":"416",
+    "overlap":"0"
+}

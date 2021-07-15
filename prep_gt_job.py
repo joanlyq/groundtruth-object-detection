@@ -1,7 +1,6 @@
 import boto3
 import json
 
-
 def create_manifest(job_path):
     """
     Creates the manifest file for the GroundTruth job
@@ -15,23 +14,29 @@ def create_manifest(job_path):
 
     s3_rec = boto3.resource("s3")
     s3_bucket = job_path.split("/")[0]
-    prefix = job_path.replace(s3_bucket, "")[1:]
-    image_folder = f"{prefix}/images"
-    print(f"using images from ... {image_folder} \n")
-
-    bucket = s3_rec.Bucket(s3_bucket)
-    objs = list(bucket.objects.filter(Prefix=image_folder))
-    img_files = objs[1:]  # first item is the folder name
-    n_imgs = len(img_files)
-    print(f"there are {n_imgs} images \n")
-
-    TOKEN = "source-ref"
+    folder_dir = job_path.replace(s3_bucket, "")[1:]
+    client = boto3.client('s3')
+    result = client.list_objects_v2(Bucket=s3_bucket, Prefix=f'{folder_dir}/', Delimiter='/')
+    print("result : ",result)
     manifest_file = "/tmp/manifest.json"
-    with open(manifest_file, "w") as fout:
+    fout = open(manifest_file, "w")
+    for subdir in result.get('CommonPrefixes'):
+        print ('sub folder : ', subdir.get('Prefix'))
+        image_folder = subdir.get('Prefix')
+        print(f"using images from ... {image_folder} \n")
+
+        bucket = s3_rec.Bucket(s3_bucket)
+        objs = list(bucket.objects.filter(Prefix=image_folder))
+        img_files = objs[:]  # first item is the folder name
+        #print(img_files)
+        n_imgs = len(img_files)
+        print(f"there are {n_imgs} images \n")
+
+        TOKEN = "source-ref"
         for img_file in img_files:
             fname = f"s3://{s3_bucket}/{img_file.key}"
             fout.write(f'{{"{TOKEN}": "{fname}"}}\n')
-
+    
     return manifest_file
 
 
@@ -71,7 +76,7 @@ def main():
     gt_job_path = f"{s3_bucket}/{job_id}"
     man_file = create_manifest(gt_job_path)
     upload_manifest(gt_job_path, man_file)
-
+    print("done")
 
 if __name__ == "__main__":
     main()
